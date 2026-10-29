@@ -21,6 +21,8 @@ import { ElaborarModal } from './components/recetario/ElaborarModal';
 import { InsumoModal } from './components/inventario/InsumoModal';
 import { ClienteModal } from './components/clientes/ClienteModal';
 import { SearchModal } from './components/modals/SearchModal';
+import { ExportCloneModal } from './components/modals/ExportCloneModal';
+import { usePWAInstall } from './utils/usePWAInstall';
 import { Receta, Insumo, Cliente } from './types';
 import {
   Menu,
@@ -35,6 +37,9 @@ import {
   Boxes,
   Users,
   DollarSign,
+  HardDriveDownload,
+  Laptop,
+  Monitor,
 } from 'lucide-react';
 
 const MainLayout: React.FC = () => {
@@ -64,6 +69,9 @@ const MainLayout: React.FC = () => {
 
   const [clienteModalOpen, setClienteModalOpen] = useState(false);
   const [clienteToEdit, setClienteToEdit] = useState<Cliente | null>(null);
+
+  const [exportCloneModalOpen, setExportCloneModalOpen] = useState(false);
+  const { isStandalone, isInstallable } = usePWAInstall();
 
   // Global Ctrl+D shortcut
   useEffect(() => {
@@ -142,7 +150,10 @@ const MainLayout: React.FC = () => {
     <div className="flex h-screen w-screen overflow-hidden bg-[#FBF9F6] dark:bg-[#150F0D] text-[#2C1810] dark:text-[#F1EAE4]">
       {/* Desktop Sidebar */}
       <div className="hidden md:block h-full">
-        <Sidebar onOpenSearch={() => setIsSearchOpen(true)} />
+        <Sidebar
+          onOpenSearch={() => setIsSearchOpen(true)}
+          onOpenExportClone={() => setExportCloneModalOpen(true)}
+        />
       </div>
 
       {/* Mobile Drawer */}
@@ -158,6 +169,10 @@ const MainLayout: React.FC = () => {
               onOpenSearch={() => {
                 setMobileMenuOpen(false);
                 setIsSearchOpen(true);
+              }}
+              onOpenExportClone={() => {
+                setMobileMenuOpen(false);
+                setExportCloneModalOpen(true);
               }}
             />
           </div>
@@ -201,6 +216,27 @@ const MainLayout: React.FC = () => {
               title="Buscar (Ctrl+D)"
             >
               <Search className="w-4 h-4" />
+            </button>
+
+            {/* Desktop / PWA Mode indicator & Install Guide button */}
+            <button
+              onClick={() => setExportCloneModalOpen(true)}
+              className="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#F8F6F2] dark:bg-[#261C18] border border-[#3E2010]/15 hover:border-[#3E2010]/40 text-[#5C3D2E] dark:text-[#C5A898] text-xs font-medium transition-colors"
+              title="¿Por qué tipo web? Configurar modo aplicación de escritorio"
+            >
+              <Laptop className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+              <span>{isStandalone ? 'App Escritorio' : 'Modo Escritorio'}</span>
+            </button>
+
+            {/* Prominent Exportar Copia / Clonar button for multiple computers */}
+            <button
+              onClick={() => setExportCloneModalOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-amber-600 to-[#78350F] hover:from-amber-700 hover:to-[#5E290B] text-white text-xs font-semibold shadow-xs transition-all active:scale-95 cursor-pointer"
+              title="Exportar copia exacta del programa y su base de datos para varias computadoras"
+            >
+              <HardDriveDownload className="w-3.5 h-3.5 text-amber-200" />
+              <span className="hidden sm:inline">Exportar Copia Multiequipo</span>
+              <span className="inline sm:hidden">Exportar</span>
             </button>
 
             {/* Quick Hornear Button */}
@@ -287,7 +323,9 @@ const MainLayout: React.FC = () => {
 
           {activeNavTab === 'actividad' && <ActividadView />}
 
-          {activeNavTab === 'ajustes' && <AjustesView />}
+          {activeNavTab === 'ajustes' && (
+            <AjustesView onOpenExportClone={() => setExportCloneModalOpen(true)} />
+          )}
 
           {activeNavTab === 'ayuda' && <AyudaView />}
         </main>
@@ -361,6 +399,11 @@ const MainLayout: React.FC = () => {
         onSelectCliente={(id) => {
           setActiveNavTab('clientes');
         }}
+      />
+
+      <ExportCloneModal
+        isOpen={exportCloneModalOpen}
+        onClose={() => setExportCloneModalOpen(false)}
       />
     </div>
   );

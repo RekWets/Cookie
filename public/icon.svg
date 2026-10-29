@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3E2010"/>
+      <stop offset="100%" stop-color="#1A0C06"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F59E0B"/>
+      <stop offset="100%" stop-color="#D97706"/>
+    </linearGradient>
+    <linearGradient id="cream" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB"/>
+      <stop offset="100%" stop-color="#FDE68A"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <circle cx="256" cy="256" r="220" stroke="#F59E0B" stroke-width="6" fill="none" opacity="0.3"/>
+  <!-- Cupcake / Cake Base -->
+  <path d="M160 280 L180 410 C182 422 192 430 204 430 L308 430 C320 430 330 422 332 410 L352 280 Z" fill="#D97706"/>
+  <!-- Cupcake Ridges -->
+  <path d="M208 280 L218 426 M256 280 L256 428 M304 280 L294 426" stroke="#92400E" stroke-width="5" stroke-linecap="round"/>
+  <!-- Frosting / Bakery Swirl -->
+  <path d="M140 270 C140 250 160 230 190 235 C195 200 230 170 260 175 C290 170 325 195 328 230 C355 230 375 250 372 272 C370 295 345 305 320 300 C290 310 220 310 190 300 C160 305 138 290 140 270 Z" fill="url(#cream)"/>
+  <path d="M200 215 C215 160 270 140 300 170 C310 180 315 195 315 205" fill="none" stroke="#F59E0B" stroke-width="7" stroke-linecap="round"/>
+  <!-- Cherry / Sparkle on top -->
+  <circle cx="256" cy="135" r="28" fill="#DC2626"/>
+  <ellipse cx="248" cy="126" rx="8" ry="5" fill="#FCA5A5"/>
+  <path d="M260 115 C275 85 305 85 315 90" fill="none" stroke="#78350F" stroke-width="6" stroke-linecap="round"/>
+  <!-- Sparkles -->
+  <path d="M120 180 Q130 180 130 170 Q130 180 140 180 Q130 180 130 190 Q130 180 120 180 Z" fill="#F59E0B"/>
+  <path d="M380 160 Q390 160 390 150 Q390 160 400 160 Q390 160 390 170 Q390 160 380 160 Z" fill="#F59E0B"/>
+</svg>

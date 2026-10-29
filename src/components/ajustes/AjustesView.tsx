@@ -18,9 +18,19 @@ import {
   User,
   Image as ImageIcon,
   Sparkles,
+  Laptop,
+  Monitor,
+  HardDriveDownload,
+  Copy,
+  ExternalLink,
 } from 'lucide-react';
+import { usePWAInstall } from '../../utils/usePWAInstall';
 
-export const AjustesView: React.FC = () => {
+interface AjustesViewProps {
+  onOpenExportClone?: () => void;
+}
+
+export const AjustesView: React.FC<AjustesViewProps> = ({ onOpenExportClone }) => {
   const {
     config,
     updateConfig,
@@ -32,6 +42,8 @@ export const AjustesView: React.FC = () => {
     lockAdmin,
     sendRecoveryEmail,
   } = useApp();
+
+  const { isInstallable, isInstalled, install } = usePWAInstall();
 
   // Estado para el gate de acceso por PIN si no está desbloqueado
   const [pinInput, setPinInput] = useState('');
@@ -417,34 +429,49 @@ export const AjustesView: React.FC = () => {
           </div>
         </form>
 
-        {/* Respaldo de Datos & APK */}
+        {/* Respaldo de Datos & Clonación Multiequipo */}
         <div className="space-y-6">
-          {/* Backup Box */}
+          {/* Card: Copia Exacta y Clonación Multiequipo */}
           <div className="bg-white dark:bg-[#1E1613] p-6 rounded-2xl border border-[#3E2010]/15 dark:border-[#38261E] shadow-2xs space-y-4">
-            <div className="flex items-center gap-2 pb-3 border-b border-[#3E2010]/10">
-              <Download className="w-4 h-4 text-[#3E2010] dark:text-[#E8C39E]" />
-              <h3 className="font-display font-bold text-sm text-[#2C1810] dark:text-[#F1EAE4]">
-                Copia de Seguridad & Base de Datos
-              </h3>
+            <div className="flex items-center justify-between pb-3 border-b border-[#3E2010]/10">
+              <div className="flex items-center gap-2">
+                <HardDriveDownload className="w-5 h-5 text-amber-700 dark:text-amber-400" />
+                <h3 className="font-display font-bold text-sm text-[#2C1810] dark:text-[#F1EAE4]">
+                  Copia Exacta del Sistema & Base de Datos
+                </h3>
+              </div>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 font-semibold">
+                Multiequipo
+              </span>
             </div>
-            <p className="text-xs text-[#8C6D58]">
-              Exporta todos tus insumos, recetas, lotes horneados y ventas en un archivo JSON para
-              respaldar o transferir a otro dispositivo o teléfono.
+            <p className="text-xs text-[#8C6D58] dark:text-[#A0816E] leading-relaxed">
+              Exporta una <strong>copia exacta de todo el programa</strong> (recetas, insumos, inventario, ventas, clientes y ajustes) para colocarla en otra computadora mediante pendrive USB, WhatsApp o correo.
             </p>
+
+            {onOpenExportClone && (
+              <button
+                type="button"
+                onClick={onOpenExportClone}
+                className="w-full py-3 px-4 rounded-xl bg-[#3E2010] hover:bg-[#28150A] text-white text-xs font-semibold shadow-xs flex items-center justify-center gap-2 transition-all active:scale-98"
+              >
+                <HardDriveDownload className="w-4 h-4 text-amber-400" />
+                <span>Abrir Asistente de Clonación y Copia para Varias PCs</span>
+              </button>
+            )}
 
             <div className="flex flex-wrap gap-2.5 pt-1">
               <button
                 type="button"
                 onClick={handleDownloadBackup}
-                className="flex items-center gap-1.5 py-2 px-3.5 bg-[#F1ECE4] dark:bg-[#2A1F1B] text-[#3E2010] dark:text-[#E8C39E] rounded-xl text-xs font-semibold hover:bg-[#E7DFD4]"
+                className="flex items-center gap-1.5 py-2 px-3.5 bg-[#F1ECE4] dark:bg-[#2A1F1B] text-[#3E2010] dark:text-[#E8C39E] rounded-xl text-xs font-semibold hover:bg-[#E7DFD4] transition-colors"
               >
                 <Download className="w-3.5 h-3.5" />
-                <span>Descargar Copia JSON</span>
+                <span>Descarga Directa (.JSON)</span>
               </button>
 
-              <label className="flex items-center gap-1.5 py-2 px-3.5 bg-[#F1ECE4] dark:bg-[#2A1F1B] text-[#3E2010] dark:text-[#E8C39E] rounded-xl text-xs font-semibold hover:bg-[#E7DFD4] cursor-pointer">
+              <label className="flex items-center gap-1.5 py-2 px-3.5 bg-[#F1ECE4] dark:bg-[#2A1F1B] text-[#3E2010] dark:text-[#E8C39E] rounded-xl text-xs font-semibold hover:bg-[#E7DFD4] cursor-pointer transition-colors">
                 <Upload className="w-3.5 h-3.5" />
-                <span>Restaurar Archivo</span>
+                <span>Restaurar Archivo de otra PC</span>
                 <input
                   type="file"
                   accept=".json"
@@ -458,10 +485,10 @@ export const AjustesView: React.FC = () => {
                 onClick={() => {
                   if (confirm('¿Restablecer los datos a los valores de fábrica? Se perderán los cambios locales.')) {
                     resetToDefaults();
-                    alert('Datos restablecidos.');
+                    alert('Datos restablecidos a los valores iniciales.');
                   }
                 }}
-                className="flex items-center gap-1.5 py-2 px-3.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl text-xs font-semibold"
+                className="flex items-center gap-1.5 py-2 px-3.5 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-xl text-xs font-semibold transition-colors"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
                 <span>Reiniciar Demo</span>
@@ -469,18 +496,63 @@ export const AjustesView: React.FC = () => {
             </div>
           </div>
 
-          {/* Mobile & Desktop APK Info */}
+          {/* Card: ¿Por qué tipo web? Modo Escritorio & PWA */}
           <div className="bg-white dark:bg-[#1E1613] p-6 rounded-2xl border border-[#3E2010]/15 dark:border-[#38261E] shadow-2xs space-y-3">
-            <div className="flex items-center gap-2 pb-2 border-b border-[#3E2010]/10">
-              <Smartphone className="w-4 h-4 text-emerald-700" />
-              <h3 className="font-display font-bold text-sm text-[#2C1810] dark:text-[#F1EAE4]">
-                Compatibilidad APK & Teléfono
-              </h3>
+            <div className="flex items-center justify-between pb-2 border-b border-[#3E2010]/10">
+              <div className="flex items-center gap-2">
+                <Monitor className="w-4 h-4 text-amber-700 dark:text-amber-400" />
+                <h3 className="font-display font-bold text-sm text-[#2C1810] dark:text-[#F1EAE4]">
+                  ¿Por qué se muestra como Web? (Modo Escritorio)
+                </h3>
+              </div>
+              {isInstalled ? (
+                <span className="text-[10px] font-semibold text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2 py-0.5 rounded-full border border-emerald-200">
+                  Instalada en PC
+                </span>
+              ) : (
+                <span className="text-[10px] font-semibold text-amber-800 dark:text-amber-300 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded-full border border-amber-200">
+                  Navegador / Vista Previa
+                </span>
+              )}
             </div>
-            <p className="text-xs text-[#8C6D58] leading-relaxed">
-              DulceGestión cuenta con arquitectura responsive y PWA (Progressive Web App). Puedes instalarla
-              directamente desde el navegador de tu teléfono móvil seleccionando <strong>"Agregar a la pantalla principal"</strong> para usarla como una aplicación nativa (APK) o abrirla desde cualquier computadora.
+
+            <p className="text-xs text-[#8C6D58] dark:text-[#A0816E] leading-relaxed">
+              El sistema se abre en tu navegador porque utiliza tecnología <strong>PWA (Progressive Web App)</strong>. Esto evita que tengas que instalar programas pesados, pero <strong>puedes instalarlo como una aplicación de escritorio independiente con su propio icono en Windows / Mac</strong>:
             </p>
+
+            <div className="p-3 bg-[#FAF7F2] dark:bg-[#251A15] rounded-xl border border-[#3E2010]/10 text-xs text-[#5C3D2E] dark:text-[#C5A898] space-y-2">
+              <div className="flex items-start gap-2">
+                <Laptop className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                <div>
+                  <strong>Ventana independiente:</strong> Se ejecuta sin la barra de direcciones de Chrome/Edge, como cualquier programa de Windows.
+                </div>
+              </div>
+              <div className="flex items-start gap-2">
+                <Sparkles className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                <div>
+                  <strong>Acceso directo en el Escritorio:</strong> Con icono de repostería en tu pantalla de inicio y barra de tareas.
+                </div>
+              </div>
+            </div>
+
+            {isInstallable ? (
+              <button
+                type="button"
+                onClick={install}
+                className="w-full py-2.5 px-4 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-semibold text-xs shadow-xs transition-all flex items-center justify-center gap-2"
+              >
+                <Monitor className="w-4 h-4" />
+                <span>Instalar como Aplicación de Escritorio en esta PC</span>
+              </button>
+            ) : isInstalled ? (
+              <div className="p-2.5 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 text-xs text-emerald-800 dark:text-emerald-300 rounded-xl text-center font-medium">
+                ✓ Aplicación ya instalada en tu sistema como programa de escritorio.
+              </div>
+            ) : (
+              <div className="text-[11px] text-[#8C6D58] dark:text-[#A0816E] bg-[#F8F6F2] dark:bg-[#221813] p-2.5 rounded-xl border border-[#3E2010]/10">
+                💡 <strong>Para instalar en Windows:</strong> En Chrome/Edge, haz clic en el icono <strong>⊕ (Instalar)</strong> en la barra de direcciones superior a la derecha.
+              </div>
+            )}
           </div>
         </div>
       </div>

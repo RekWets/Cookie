@@ -17,15 +17,18 @@ import {
   Bell,
   Search,
   Sparkles,
+  HardDriveDownload,
+  Laptop,
   Users,
 } from 'lucide-react';
 
 interface SidebarProps {
   onCloseMobile?: () => void;
   onOpenSearch?: () => void;
+  onOpenExportClone?: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ onCloseMobile, onOpenSearch }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ onCloseMobile, onOpenSearch, onOpenExportClone }) => {
   const {
     config,
     activeNavTab,
@@ -191,6 +194,21 @@ export const Sidebar: React.FC<SidebarProps> = ({ onCloseMobile, onOpenSearch })
             Soporte
           </span>
           <div className="space-y-0.5 pt-1">
+            <button
+              onClick={() => {
+                if (onOpenExportClone) onOpenExportClone();
+                if (onCloseMobile) onCloseMobile();
+              }}
+              className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium text-amber-900 dark:text-amber-300 bg-amber-100/60 dark:bg-amber-950/40 hover:bg-amber-200/70 dark:hover:bg-amber-900/50 transition-colors group"
+            >
+              <div className="flex items-center gap-3">
+                <HardDriveDownload className="w-4 h-4 text-amber-700 dark:text-amber-400 group-hover:scale-110 transition-transform" />
+                <span>Copia Multiequipo</span>
+              </div>
+              <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-200/80 dark:bg-amber-800/60 font-semibold">
+                Exportar
+              </span>
+            </button>
             <button
               onClick={() => handleNavClick('ajustes')}
               className={navItemClass('ajustes')}
