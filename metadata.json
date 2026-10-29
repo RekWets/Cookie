@@ -1,0 +1,8 @@
+{
+  "name": "MY Cookies Systems - Repostería \u0026 Inventario",
+  "description": "Sistema integral de gestión de inventario para repostería con control de clave administrativa, recetario, cálculo de costos de producción y registro de ventas por clientes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
